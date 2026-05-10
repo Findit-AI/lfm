@@ -1,0 +1,37 @@
+{
+  "data_format": "channels_first",
+  "do_image_splitting": true,
+  "do_normalize": true,
+  "do_pad": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "downsample_factor": 2,
+  "encoder_patch_size": 16,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Lfm2VlImageProcessorFast",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_image_tokens": 256,
+  "max_num_patches": 1024,
+  "max_pixels_tolerance": 2.0,
+  "max_tiles": 10,
+  "min_image_tokens": 64,
+  "min_tiles": 2,
+  "resample": 2,
+  "rescale_factor": 0.00392156862745098,
+  "return_row_col_info": true,
+  "size": {
+    "height": 512,
+    "width": 512
+  },
+  "tile_size": 512,
+  "use_thumbnail": true,
+  "processor_class": "Lfm2VlProcessor"
+}

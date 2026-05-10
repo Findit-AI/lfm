@@ -1,48 +1,126 @@
 [package]
-name = "template-rs"
-version = "0.0.0"
-edition = "2021"
-repository = "https://github.com/al8n/template-rs"
-homepage = "https://github.com/al8n/template-rs"
-documentation = "https://docs.rs/template-rs"
-description = "A template for creating Rust open-source repo on GitHub"
-license = "MIT OR Apache-2.0"
-rust-version = "1.73"
-
-[[bench]]
-path = "benches/foo.rs"
-name = "foo"
-harness = false
-
-[features]
-default = ["std"]
-alloc = []
-std = []
+name          = "lfm"
+version       = "0.1.1"
+edition       = "2024"
+rust-version  = "1.95"
+description   = "Rust ONNX inference for LiquidAI LFM2.5-VL (vision-language) models — implements the engine-agnostic llmtask::Task contract via llguidance for schema-constrained sampling"
+license       = "MIT OR Apache-2.0"
+repository    = "https://github.com/findit-ai/lfm"
+homepage      = "https://github.com/findit-ai/lfm"
+documentation = "https://docs.rs/lfm"
+keywords      = ["vlm", "onnx", "vision-language", "lfm", "constrained-decoding"]
+categories    = ["api-bindings", "computer-vision", "multimedia::images"]
+include      = [
+  "src/**/*.rs",
+  "examples/**/*.rs",
+  "benches/**/*.rs",
+  "models/*.json",
+  "models/*.jinja",
+  "build.rs",
+  "Cargo.toml",
+  "README.md",
+  "CHANGELOG.md",
+  "LICENSE-*",
+]
 
 [dependencies]
+llmtask     = { version = "0.1", features = ["json", "regex"] }
+ort         = { version = "2.0.0-rc.12", optional = true }
+# `default-features = false` drops `progressbar` (training UI),
+# `onig` (C++ regex engine) and `esaxx_fast` (C++ suffix-array
+# Unigram trainer). lfm only uses `tokenizer.from_file` +
+# encode/decode at inference time; the trainer paths are dead
+# code for us. `fancy-regex` is the pure-Rust regex backend
+# replacement for `onig` and is what JSON-defined BPE tokenizers
+# need at runtime. Keeping `esaxx_fast` ON pulled the C++
+# `esaxx-rs` into the link, which on Windows MSVC was built with
+# `/MT` (static CRT) and clashed with `ort_sys` built with
+# `/MD` (dynamic CRT) — `LNK1319: 1 mismatches detected`. This
+# also matches the feature set `toktrie_hf_tokenizers` already
+# uses on `tokenizers` 0.21 transitively.
+tokenizers  = { version = "0.23", optional = true, default-features = false, features = ["fancy-regex"] }
+llguidance  = { version = "1.7", optional = true }
+toktrie     = { version = "1.7", optional = true }
+toktrie_hf_tokenizers = { version = "1.7", optional = true }
+minijinja   = { version = "2", optional = true, default-features = false, features = ["builtins", "json", "macros", "serde"] }
+image       = { version = "0.25", default-features = false }
+smol_str    = "0.3"
+thiserror   = "2"
+tracing     = "0.1"
+serde       = { version = "1", features = ["derive"] }
+serde_json  = { version = "1" }
+fast_image_resize = "6.0.0"
 
 [dev-dependencies]
+serde_json = "1"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
 criterion = "0.8"
-tempfile = "3"
+
+[features]
+default     = ["inference", "bundled", "decoders"]
+# `inference` provides ORT, tokenizers, llguidance, minijinja. The Engine
+# additionally requires `decoders` for image preprocessing — see
+# src/lib.rs Engine gate. Use `inference` alone for the runtime types
+# (Sampler, Decoder, KvCache, etc.) without the public Engine.
+inference   = ["dep:ort", "dep:tokenizers", "dep:llguidance", "dep:toktrie", "dep:toktrie_hf_tokenizers", "dep:minijinja"]
+# `bundled` ships the tokenizer + small JSON configs as include_bytes!.
+# It implies both `inference` (for Engine machinery) AND `decoders`
+# (for the `Engine::from_onnx_dir` constructor); without this, a
+# `--features bundled` build would fail to expose Engine.
+bundled     = ["inference", "decoders"]
+decoders    = ["image/jpeg", "image/png"]
+serde       = ["smol_str/serde", "llmtask/serde"]
+cuda        = ["inference", "ort/cuda"]
+tensorrt    = ["inference", "ort/tensorrt"]
+directml    = ["inference", "ort/directml"]
+rocm        = ["inference", "ort/rocm"]
+coreml      = ["inference", "ort/coreml"]
+integration = ["inference"]
+
+[[test]]
+name              = "integration"
+path              = "tests/integration.rs"
+required-features = ["integration"]
+
+[[example]]
+name              = "smoke"
+# Engine + from_dir require all three: bundled (for tokenizer assets +
+# from_dir gate), inference (for the runtime), decoders (for image
+# decode). Round-27 fix: was incorrectly listed as `inference`-only.
+required-features = ["bundled", "inference", "decoders"]
+[[example]]
+name              = "scene_analysis"
+required-features = ["bundled", "inference", "decoders"]
+[[example]]
+name              = "preprocess_only"
+
+[[bench]]
+name    = "bench_preproc"
+harness = false
+[[bench]]
+name    = "bench_tile_grid"
+harness = false
+[[bench]]
+name              = "bench_chat_template"
+harness           = false
+required-features = ["inference"]
 
 [profile.bench]
-opt-level = 3
-debug = false
-codegen-units = 1
-lto = 'thin'
-incremental = false
-debug-assertions = false
-overflow-checks = false
-rpath = false
+opt-level         = 3
+debug             = false
+codegen-units     = 1
+lto               = 'thin'
+incremental       = false
+debug-assertions  = false
+overflow-checks   = false
+rpath             = false
 
 [package.metadata.docs.rs]
-all-features = true
+features     = ["inference", "bundled", "decoders", "serde"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [lints.rust]
-rust_2018_idioms = "warn"
+rust_2018_idioms     = "warn"
 single_use_lifetimes = "warn"
-unexpected_cfgs = { level = "warn", check-cfg = [
-  'cfg(all_tests)',
-  'cfg(tarpaulin)',
-] }
+unexpected_cfgs      = { level = "warn", check-cfg = ['cfg(docsrs)', 'cfg(tarpaulin)'] }

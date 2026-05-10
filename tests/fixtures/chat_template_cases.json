@@ -1,0 +1,137 @@
+[
+  {
+    "name": "single_user_text",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hi"
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>user\nHi<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "single_user_image_text",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "text",
+            "text": "Describe."
+          }
+        ]
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>user\n<image>Describe.<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "system_user",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are helpful."
+      },
+      {
+        "role": "user",
+        "content": "Hi"
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>system\nYou are helpful.<|im_end|>\n<|im_start|>user\nHi<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "user_assistant_user",
+    "messages": [
+      {
+        "role": "user",
+        "content": "1+1?"
+      },
+      {
+        "role": "assistant",
+        "content": "2"
+      },
+      {
+        "role": "user",
+        "content": "2+2?"
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>user\n1+1?<|im_end|>\n<|im_start|>assistant\n2<|im_end|>\n<|im_start|>user\n2+2?<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "multi_image_user",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "text",
+            "text": "Compare."
+          }
+        ]
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>user\n<image><image>Compare.<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "no_generation_prompt",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hi"
+      }
+    ],
+    "add_generation_prompt": false,
+    "expected": "<|startoftext|><|im_start|>user\nHi<|im_end|>\n"
+  },
+  {
+    "name": "thinking_assistant",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Q"
+      },
+      {
+        "role": "assistant",
+        "thinking": "let me think",
+        "content": "A"
+      },
+      {
+        "role": "user",
+        "content": "Follow-up"
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>user\nQ<|im_end|>\n<|im_start|>assistant\n<think>let me think</think>A<|im_end|>\n<|im_start|>user\nFollow-up<|im_end|>\n<|im_start|>assistant\n"
+  },
+  {
+    "name": "with_tools",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Weather Paris?"
+      }
+    ],
+    "tools": [
+      {
+        "name": "get_weather",
+        "description": "Get current weather",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ],
+    "expected": "<|startoftext|><|im_start|>system\nToday's date: __DATE__\n\nList of tools: [{\"description\":\"Get current weather\",\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"location\":{\"type\":\"string\"}},\"type\":\"object\"}}]<|im_end|>\n<|im_start|>user\nWeather Paris?<|im_end|>\n<|im_start|>assistant\n"
+  }
+]

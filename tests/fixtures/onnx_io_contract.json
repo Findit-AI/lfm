@@ -1,0 +1,578 @@
+{
+  "_metadata": {
+    "captured_at": "2026-05-03T04:48:15.000407Z",
+    "hf_repo": "LiquidAI/LFM2.5-VL-450M-ONNX",
+    "hf_revision": "95c283d4497a56477a83177079fa6b7121abb1b1",
+    "capture_script_version": "1.0"
+  },
+  "vision_encoder.onnx": {
+    "_source_path": "vision_encoder.onnx",
+    "inputs": [
+      {
+        "name": "pixel_values",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          "num_patches",
+          768
+        ]
+      },
+      {
+        "name": "pixel_attention_mask",
+        "dtype": "INT64",
+        "dtype_id": 7,
+        "shape": [
+          "batch_size",
+          "num_patches"
+        ]
+      },
+      {
+        "name": "spatial_shapes",
+        "dtype": "INT64",
+        "dtype_id": 7,
+        "shape": [
+          "batch_size",
+          2
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "image_features",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "num_image_tokens",
+          1024
+        ]
+      }
+    ]
+  },
+  "embed_tokens.onnx": {
+    "_source_path": "embed_tokens.onnx",
+    "inputs": [
+      {
+        "name": "input_ids",
+        "dtype": "INT64",
+        "dtype_id": 7,
+        "shape": [
+          "batch_size",
+          "sequence_length"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "inputs_embeds",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          "sequence_length",
+          1024
+        ]
+      }
+    ]
+  },
+  "decoder_model_merged.onnx": {
+    "_source_path": "decoder_model_merged.onnx",
+    "inputs": [
+      {
+        "name": "inputs_embeds",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          "sequence_length",
+          1024
+        ]
+      },
+      {
+        "name": "attention_mask",
+        "dtype": "INT64",
+        "dtype_id": 7,
+        "shape": [
+          "batch_size",
+          "total_sequence_length"
+        ]
+      },
+      {
+        "name": "past_conv.0",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_conv.1",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.2.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.2.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.3",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_conv.4",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.5.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.5.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.6",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_conv.7",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.8.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.8.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.9",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.10.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.10.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.11",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.12.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.12.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.13",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "past_key_values.14.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_key_values.14.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "past_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "past_conv.15",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "logits",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          "sequence_length",
+          65536
+        ]
+      },
+      {
+        "name": "present_conv.0",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present_conv.1",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.2.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.2.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.3",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present_conv.4",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.5.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.5.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.6",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present_conv.7",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.8.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.8.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.9",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.10.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.10.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.11",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.12.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.12.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.13",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      },
+      {
+        "name": "present.14.key",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present.14.value",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          8,
+          "total_sequence_length",
+          64
+        ]
+      },
+      {
+        "name": "present_conv.15",
+        "dtype": "FLOAT",
+        "dtype_id": 1,
+        "shape": [
+          "batch_size",
+          1024,
+          3
+        ]
+      }
+    ]
+  }
+}

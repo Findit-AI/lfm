@@ -16,3 +16,8 @@
 
 /target
 Cargo.lock
+
+# Project-local Claude Code state
+.claude/
+docs/
+
