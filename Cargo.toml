@@ -21,7 +21,19 @@ include      = [
 [dependencies]
 llmtask     = { version = "0.1", features = ["json", "regex"] }
 ort         = { version = "2.0.0-rc.12", optional = true }
-tokenizers  = { version = "0.23", optional = true }
+# `default-features = false` drops `progressbar` (training UI),
+# `onig` (C++ regex engine) and `esaxx_fast` (C++ suffix-array
+# Unigram trainer). lfm only uses `tokenizer.from_file` +
+# encode/decode at inference time; the trainer paths are dead
+# code for us. `fancy-regex` is the pure-Rust regex backend
+# replacement for `onig` and is what JSON-defined BPE tokenizers
+# need at runtime. Keeping `esaxx_fast` ON pulled the C++
+# `esaxx-rs` into the link, which on Windows MSVC was built with
+# `/MT` (static CRT) and clashed with `ort_sys` built with
+# `/MD` (dynamic CRT) — `LNK1319: 1 mismatches detected`. This
+# also matches the feature set `toktrie_hf_tokenizers` already
+# uses on `tokenizers` 0.21 transitively.
+tokenizers  = { version = "0.23", optional = true, default-features = false, features = ["fancy-regex"] }
 llguidance  = { version = "1.7", optional = true }
 toktrie     = { version = "1.7", optional = true }
 toktrie_hf_tokenizers = { version = "1.7", optional = true }
