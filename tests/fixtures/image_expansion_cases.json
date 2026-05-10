@@ -1,0 +1,54 @@
+[
+  {
+    "name": "single_tile_64_tokens",
+    "info": {"rows": 1, "cols": 1, "tokens_per_main_tile": 64, "thumbnail_tokens": null},
+    "prompt": "Describe: <image>",
+    "expected": "Describe: <|image_start|><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><image><|image_end|>"
+  },
+  {
+    "name": "multi_tile_2x2_with_thumbnail_small",
+    "info": {"rows": 2, "cols": 2, "tokens_per_main_tile": 4, "thumbnail_tokens": 4},
+    "prompt": "<image>",
+    "expected": "<|image_start|><|img_row_1_col_1|><image><image><image><image><|img_row_1_col_2|><image><image><image><image><|img_row_2_col_1|><image><image><image><image><|img_row_2_col_2|><image><image><image><image><|img_thumbnail|><image><image><image><image><|image_end|>"
+  },
+  {
+    "name": "multi_tile_2x2_no_thumbnail_small",
+    "info": {"rows": 2, "cols": 2, "tokens_per_main_tile": 2, "thumbnail_tokens": null},
+    "prompt": "Q: <image>",
+    "expected": "Q: <|image_start|><|img_row_1_col_1|><image><image><|img_row_1_col_2|><image><image><|img_row_2_col_1|><image><image><|img_row_2_col_2|><image><image><|image_end|>"
+  },
+  {
+    "name": "multi_tile_3x1_horizontal",
+    "info": {"rows": 1, "cols": 3, "tokens_per_main_tile": 1, "thumbnail_tokens": null},
+    "_comment": "rows=grid_height=1, cols=grid_width=3 → upstream emits row in 0..grid_width, col in 0..grid_height → _row_1_col_1, _row_2_col_1, _row_3_col_1",
+    "prompt": "wide<image>",
+    "expected": "wide<|image_start|><|img_row_1_col_1|><image><|img_row_2_col_1|><image><|img_row_3_col_1|><image><|image_end|>"
+  },
+  {
+    "name": "multi_tile_1x3_vertical",
+    "info": {"rows": 3, "cols": 1, "tokens_per_main_tile": 1, "thumbnail_tokens": null},
+    "_comment": "rows=grid_height=3, cols=grid_width=1 → upstream emits _row_1_col_1, _row_1_col_2, _row_1_col_3",
+    "prompt": "<image>tall",
+    "expected": "<|image_start|><|img_row_1_col_1|><image><|img_row_1_col_2|><image><|img_row_1_col_3|><image><|image_end|>tall"
+  },
+  {
+    "name": "multi_tile_4x2_widescreen",
+    "info": {"rows": 2, "cols": 4, "tokens_per_main_tile": 1, "thumbnail_tokens": null},
+    "_comment": "1920x1080-style: rows=grid_height=2, cols=grid_width=4 → upstream emits 4 outer × 2 inner = 8 markers ordered _row_1_col_1, _row_1_col_2, _row_2_col_1, _row_2_col_2, _row_3_col_1, _row_3_col_2, _row_4_col_1, _row_4_col_2",
+    "prompt": "<image>",
+    "expected": "<|image_start|><|img_row_1_col_1|><image><|img_row_1_col_2|><image><|img_row_2_col_1|><image><|img_row_2_col_2|><image><|img_row_3_col_1|><image><|img_row_3_col_2|><image><|img_row_4_col_1|><image><|img_row_4_col_2|><image><|image_end|>"
+  },
+  {
+    "name": "multi_tile_2x4_portrait",
+    "info": {"rows": 4, "cols": 2, "tokens_per_main_tile": 1, "thumbnail_tokens": null},
+    "_comment": "1080x1920-style: rows=grid_height=4, cols=grid_width=2 → upstream emits 2 outer × 4 inner = 8 markers ordered _row_1_col_1, _row_1_col_2, _row_1_col_3, _row_1_col_4, _row_2_col_1, _row_2_col_2, _row_2_col_3, _row_2_col_4",
+    "prompt": "<image>",
+    "expected": "<|image_start|><|img_row_1_col_1|><image><|img_row_1_col_2|><image><|img_row_1_col_3|><image><|img_row_1_col_4|><image><|img_row_2_col_1|><image><|img_row_2_col_2|><image><|img_row_2_col_3|><image><|img_row_2_col_4|><image><|image_end|>"
+  },
+  {
+    "name": "single_tile_1_token",
+    "info": {"rows": 1, "cols": 1, "tokens_per_main_tile": 1, "thumbnail_tokens": null},
+    "prompt": "<image>",
+    "expected": "<|image_start|><image><|image_end|>"
+  }
+]

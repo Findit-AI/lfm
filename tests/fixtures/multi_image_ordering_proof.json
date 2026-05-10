@@ -1,0 +1,72 @@
+{
+  "_metadata": {
+    "captured_at": "2026-05-03T05:10:34.209355Z",
+    "hf_repo": "LiquidAI/LFM2.5-VL-450M-ONNX",
+    "hf_revision": "95c283d4497a56477a83177079fa6b7121abb1b1",
+    "verify_script_version": "1.0",
+    "vision_encoder_path": "vision_encoder_fp16.onnx",
+    "output_tensor_name": "image_features",
+    "tolerance": 0.005
+  },
+  "case_1_single_tile_pair": {
+    "case": "case_1_single_tile_pair",
+    "passed": true,
+    "input_shapes": {
+      "img_a": [
+        256,
+        256
+      ],
+      "img_b": [
+        256,
+        256
+      ],
+      "n_a_alone": 64,
+      "n_b_alone": 64,
+      "n_concat": 128
+    },
+    "max_abs_diff_a": 0.0,
+    "max_abs_diff_b": 0.0,
+    "tolerance": 0.005
+  },
+  "case_2_multi_tile_pair": {
+    "case": "case_2_multi_tile_pair",
+    "passed": false,
+    "input_shapes": {
+      "img_a": [
+        1024,
+        1024
+      ],
+      "img_b": [
+        1024,
+        1024
+      ],
+      "n_a_alone": 1280,
+      "n_b_alone": 1280,
+      "n_concat": 2560
+    },
+    "max_abs_diff_a": 286.875,
+    "max_abs_diff_b": 286.875,
+    "tolerance": 0.005
+  },
+  "case_3_mixed_size_pair": {
+    "case": "case_3_mixed_size_pair",
+    "passed": false,
+    "input_shapes": {
+      "img_a": [
+        256,
+        256
+      ],
+      "img_b": [
+        1024,
+        1024
+      ],
+      "n_a_alone": 64,
+      "n_b_alone": 1280,
+      "n_concat": 1344
+    },
+    "max_abs_diff_a": 473.25,
+    "max_abs_diff_b": 0.0,
+    "tolerance": 0.005
+  },
+  "all_passed": false
+}
